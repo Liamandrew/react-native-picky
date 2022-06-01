@@ -6,7 +6,7 @@ import { PickyView } from 'react-native-picky';
 export default function App() {
   return (
     <View style={styles.container}>
-      <PickyViewManager color="#32a852" style={styles.box} />
+      <PickyView color="#32a852" style={styles.box} />
     </View>
   );
 }
