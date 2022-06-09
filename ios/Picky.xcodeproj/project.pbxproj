@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-
-		5E555C0D2413F4C50049A1A2 /* Picky.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Picky.m */; };
-
+		98061BAF28484A8600E17D2F /* Picky.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Picky.m */; };
+		98061BB028484A8900E17D2F /* PickyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 98061BAB2848498100E17D2F /* PickyManager.m */; };
+		98061BB2284873D300E17D2F /* PickyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 98061BB1284873D300E17D2F /* PickyLabel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,10 +26,12 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libPicky.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPicky.a; sourceTree = BUILT_PRODUCTS_DIR; };
-
+		98061BAB2848498100E17D2F /* PickyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PickyManager.m; sourceTree = "<group>"; };
+		98061BAC284849DC00E17D2F /* PickyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickyManager.h; sourceTree = "<group>"; };
+		98061BB1284873D300E17D2F /* PickyLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PickyLabel.m; sourceTree = "<group>"; };
+		98061BB3284873E100E17D2F /* PickyLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickyLabel.h; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* Picky.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Picky.h; sourceTree = "<group>"; };
-		B3E7B5891CC2AC0600A0062D /* Picky.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Picky.m; sourceTree = "<group>"; };
-
+		B3E7B5891CC2AC0600A0062D /* Picky.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = Picky.m; sourceTree = "<group>"; tabWidth = 2; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,10 +56,12 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-
 				B3E7B5881CC2AC0600A0062D /* Picky.h */,
 				B3E7B5891CC2AC0600A0062D /* Picky.m */,
-
+				98061BB3284873E100E17D2F /* PickyLabel.h */,
+				98061BB1284873D300E17D2F /* PickyLabel.m */,
+				98061BAC284849DC00E17D2F /* PickyManager.h */,
+				98061BAB2848498100E17D2F /* PickyManager.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -119,9 +123,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
-				B3E7B58A1CC2AC0600A0062D /* Picky.m in Sources */,
-
+				98061BAF28484A8600E17D2F /* Picky.m in Sources */,
+				98061BB2284873D300E17D2F /* PickyLabel.m in Sources */,
+				98061BB028484A8900E17D2F /* PickyManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,7 +238,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Picky;
 				SKIP_INSTALL = YES;
-
 			};
 			name = Debug;
 		};
@@ -251,7 +254,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Picky;
 				SKIP_INSTALL = YES;
-
 			};
 			name = Release;
 		};

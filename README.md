@@ -1,21 +1,39 @@
-# react-native-picky
+# ⛏️ react-native-picky
 
-An improved native wheel picker component for react-native
+An awesome native wheel picker component for react-native.
+
+## Features
+
+- Supports multiple columns ✅
+
+- Supports looping ✅
+
+- Native components for improved performance ✅
+
+- Typescript ✅
 
 ## Installation
 
 ```sh
-npm install react-native-picky
+yarn add react-native-picky
 ```
 
-## Usage
+## Quick Start
 
-```js
-import { PickyView } from "react-native-picky";
+```tsx
+import { Picker } from 'react-native-picky';
 
 // ...
 
-<PickyView color="tomato" />
+<Picker>
+  <PickerGroup>
+    <PickerItem label="Monday" value="Monday" />
+    <PickerItem label="Tuesday" value="Tuesday" />
+    <PickerItem label="Wednesday" value="Wednesday" />
+    <PickerItem label="Thursday" value="Thursday" />
+    <PickerItem label="Friday" value="Friday" />
+  </PickerGroup>
+</Picker>;
 ```
 
 ## Contributing
