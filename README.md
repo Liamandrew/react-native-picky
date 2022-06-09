@@ -21,7 +21,7 @@ yarn add react-native-picky
 ## Quick Start
 
 ```tsx
-import { Picker } from 'react-native-picky';
+import { Picker, PickerGroup, PickerItem } from 'react-native-picky';
 
 // ...
 
