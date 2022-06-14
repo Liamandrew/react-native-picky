@@ -17,16 +17,9 @@ export default function App() {
           </PickerGroup>
         </Picker>
 
-        <Picker
-          loop
-          onChange={({ nativeEvent }) =>
-            console.log('picker level: ', nativeEvent)
-          }
-        >
+        <Picker loop onChange={(event) => console.log('picker level: ', event)}>
           <PickerGroup
-            onChange={({ nativeEvent }) =>
-              console.log('picker group level: ', nativeEvent)
-            }
+            onChange={(event) => console.log('picker group level: ', event)}
           >
             <PickerItem label="A1" value="A1" />
             <PickerItem label="A2" value="A2" />

@@ -1,25 +1,37 @@
 import React, { Children, ReactElement, useCallback, useMemo } from 'react';
-import { StyleSheet, Platform, processColor, View } from 'react-native';
-import { NativePicker, NativePickerProps } from './NativePicker';
+import {
+  StyleSheet,
+  Platform,
+  processColor,
+  View,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
+import { NativePicker } from './NativePicker';
 import type { PickerGroupProps } from './PickerGroup';
 import type {
   NativeItem,
   NativeOnChangeEvent,
   NativePickerDataItem,
+  PickerGroupChangeItem,
 } from './types';
 
 type PickerChild = ReactElement<PickerGroupProps>;
 
-export interface PickerProps
-  extends Omit<
-    NativePickerProps,
-    'data' | 'selectedIndexes' | 'textColor' | 'indicatorColor' | 'curtainColor'
-  > {
+export interface PickerProps {
+  loop?: boolean;
   children: PickerChild | PickerChild[];
-  // Override Android color props with string types
+  hasCurtain?: boolean;
   curtainColor?: string;
+  hasIndicator?: boolean;
   indicatorColor?: string;
+  indicatorSize?: number;
+  itemSpace?: number;
   textColor?: string;
+  textSize?: number;
+  selectedIndex?: number;
+  style?: StyleProp<ViewStyle>;
+  onChange?: (item: PickerGroupChangeItem) => void;
 }
 
 export const Picker = ({
@@ -42,14 +54,14 @@ export const Picker = ({
   });
 
   const handleOnChange: NativeOnChangeEvent = useCallback(
-    (event) => {
+    ({ nativeEvent }) => {
       if (onChange) {
-        onChange(event);
+        onChange(nativeEvent);
       }
 
       Children.forEach(children, (groupChild, index) => {
-        if (index === event.nativeEvent.group && groupChild.props.onChange) {
-          groupChild.props.onChange(event);
+        if (index === nativeEvent.group && groupChild.props.onChange) {
+          groupChild.props.onChange(nativeEvent);
         }
       });
     },

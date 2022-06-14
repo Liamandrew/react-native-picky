@@ -1,12 +1,12 @@
 import React, { ReactElement } from 'react';
 import type { PickerItemProps } from './PickerItem';
-import type { NativeOnChangeEvent, NativeValue } from './types';
+import type { PickerGroupChangeItem } from './types';
 
 type PickerGroupChild = ReactElement<PickerItemProps>;
 
 export interface PickerGroupProps {
-  selectedValue?: NativeValue;
-  onChange?: NativeOnChangeEvent;
+  selectedValue?: string | number;
+  onChange?: (item: PickerGroupChangeItem) => void;
   children: PickerGroupChild | PickerGroupChild[];
 }
 
