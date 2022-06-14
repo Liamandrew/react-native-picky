@@ -48,10 +48,7 @@ export const Picker = ({
       }
 
       Children.forEach(children, (groupChild, index) => {
-        if (
-          index === event.nativeEvent.component &&
-          groupChild.props.onChange
-        ) {
+        if (index === event.nativeEvent.group && groupChild.props.onChange) {
           groupChild.props.onChange(event);
         }
       });
@@ -80,7 +77,7 @@ export const Picker = ({
             style={[styles.androidPickyContainer, style]}
           >
             <NativePicker
-              component={index}
+              group={index}
               data={componentData}
               loop={loop}
               onChange={handleOnChange}

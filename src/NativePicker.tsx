@@ -28,7 +28,7 @@ type NativeIOSProps = {
 };
 
 type NativeAndroidProps = {
-  component?: number;
+  group?: number;
   curtainColor?: NativeColorType;
   hasCurtain?: boolean;
   hasIndicator?: boolean;

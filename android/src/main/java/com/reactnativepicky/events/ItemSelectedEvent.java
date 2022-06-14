@@ -10,14 +10,14 @@ public class ItemSelectedEvent extends Event<ItemSelectedEvent> {
   public static final String EVENT_NAME = "pickyItemSelected";
 
   private final Object mValue;
-  private final int mComponent;
+  private final int mGroup;
   private final int mIndex;
 
-  public ItemSelectedEvent(int viewTag, Object value, int index, int component) {
+  public ItemSelectedEvent(int viewTag, Object value, int index, int group) {
     super(viewTag);
     mValue = value;
     mIndex = index;
-    mComponent = component;
+    mGroup = group;
   }
 
   @Override
@@ -55,7 +55,7 @@ public class ItemSelectedEvent extends Event<ItemSelectedEvent> {
     }
 
     eventData.putInt("index", mIndex);
-    eventData.putInt("component", mComponent);
+    eventData.putInt("group", mGroup);
 
     return eventData;
   }

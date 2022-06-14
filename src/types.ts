@@ -14,7 +14,7 @@ export type NativePickerDataItem = NativeItem[];
 export type NativeValue = number | string;
 
 export type NativePickerChangeEvent = {
-  component: number;
+  group: number;
   index: number;
   value: NativeValue;
 };
