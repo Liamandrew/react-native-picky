@@ -2,36 +2,47 @@ import {
   requireNativeComponent,
   UIManager,
   Platform,
-  processColor,
   StyleProp,
   ViewStyle,
-  NativeSyntheticEvent,
 } from 'react-native';
-import type { PickerItemProps } from './PickerItem';
+import type {
+  NativeColorType,
+  NativeOnChangeEvent,
+  NativePickerDataItem,
+} from './types';
 
 const ComponentName = 'Picky';
 
-export type NativeItem = Omit<PickerItemProps, 'color'> & {
-  textColor: ReturnType<typeof processColor>;
-};
+type NativeIOSData = NativePickerDataItem[];
+type NativeAndroidData = NativePickerDataItem;
 
-export type NativePickerDataItem = NativeItem[];
-
-export type NativeValue = number | string;
-
-export type NativePickerChangeEvent = {
-  component: number;
-  index: number;
-  value: NativeValue;
-};
-
-export interface NativePickerProps {
+type NativeCommonProps = {
   loop?: boolean;
-  data: NativePickerDataItem[];
-  onChange?: (event: NativeSyntheticEvent<NativePickerChangeEvent>) => void;
-  selectedIndexes: number[];
+  data: NativeIOSData | NativeAndroidData;
+  onChange?: NativeOnChangeEvent;
+};
+
+type NativeIOSProps = {
   style?: StyleProp<ViewStyle>;
-}
+  selectedIndexes?: number[];
+};
+
+type NativeAndroidProps = {
+  component?: number;
+  curtainColor?: NativeColorType;
+  hasCurtain?: boolean;
+  hasIndicator?: boolean;
+  indicatorSize?: number;
+  indicatorColor?: NativeColorType;
+  itemSpace?: number;
+  textColor?: NativeColorType;
+  textSize?: number;
+  selectedIndex?: number;
+};
+
+export type NativePickerProps = NativeCommonProps &
+  NativeIOSProps &
+  NativeAndroidProps;
 
 export const NativePicker =
   UIManager.getViewManagerConfig(ComponentName) != null

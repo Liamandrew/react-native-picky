@@ -18,6 +18,13 @@ def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
+rootProject.allprojects {
+    repositories {
+        jcenter()
+        google()
+    }
+}
+
 android {
     compileSdkVersion safeExtGet('Picky_compileSdkVersion', 29)
     defaultConfig {
@@ -56,4 +63,6 @@ repositories {
 dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+
+    implementation "cn.aigestudio.wheelpicker:WheelPicker:1.1.3"
 }
