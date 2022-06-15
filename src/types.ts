@@ -23,6 +23,6 @@ export type NativePickerChangeEvent = {
   value: string | number;
 };
 
-export type NativeOnChangeEvent = (
+export type NativeOnChange = (
   event: NativeSyntheticEvent<NativePickerChangeEvent>
 ) => void;
