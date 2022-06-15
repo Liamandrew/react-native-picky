@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import type {
   NativeColorType,
-  NativeOnChangeEvent,
+  NativeOnChange,
   NativePickerDataItem,
 } from './types';
 
@@ -19,7 +19,7 @@ type NativeAndroidData = NativePickerDataItem;
 type NativeCommonProps = {
   loop?: boolean;
   data: NativeIOSData | NativeAndroidData;
-  onChange?: NativeOnChangeEvent;
+  onChange?: NativeOnChange;
 };
 
 type NativeIOSProps = {
@@ -41,8 +41,7 @@ type NativeAndroidProps = {
 };
 
 export type NativePickerProps = NativeCommonProps &
-  NativeIOSProps &
-  NativeAndroidProps;
+  (NativeIOSProps | NativeAndroidProps);
 
 export const NativePicker =
   UIManager.getViewManagerConfig(ComponentName) != null

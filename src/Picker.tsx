@@ -11,7 +11,7 @@ import { NativePicker } from './NativePicker';
 import type { PickerGroupProps } from './PickerGroup';
 import type {
   NativeItem,
-  NativeOnChangeEvent,
+  NativeOnChange,
   NativePickerDataItem,
   PickerGroupChangeItem,
 } from './types';
@@ -53,7 +53,7 @@ export const Picker = ({
     textColor,
   });
 
-  const handleOnChange: NativeOnChangeEvent = useCallback(
+  const handleOnChange: NativeOnChange = useCallback(
     ({ nativeEvent }) => {
       if (onChange) {
         onChange(nativeEvent);

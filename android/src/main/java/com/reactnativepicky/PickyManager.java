@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.SimpleViewManager;
@@ -65,11 +66,17 @@ public class PickyManager extends SimpleViewManager<Picky> {
     @ReactProp(name="data")
     public void setData(Picky picker, ReadableArray items) {
       if (picker != null) {
-        ArrayList<String> valueData = new ArrayList<>();
+        ArrayList valueData = new ArrayList<>();
         ArrayList<String> labelData = new ArrayList<>();
         for (int i = 0; i < items.size(); i ++) {
           ReadableMap itemMap = items.getMap(i);
-          valueData.add(itemMap.getString("value"));
+          ReadableType valueType = itemMap.getType("value");
+          if (valueType == ReadableType.String) {
+            valueData.add(itemMap.getString("value"));
+          } else if (valueType == ReadableType.Number) {
+            valueData.add(itemMap.getDouble("value"));
+          }
+
           labelData.add(itemMap.getString("label"));
         }
         picker.setValueData(valueData);
