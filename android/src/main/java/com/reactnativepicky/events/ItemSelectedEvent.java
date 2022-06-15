@@ -50,6 +50,8 @@ public class ItemSelectedEvent extends Event<ItemSelectedEvent> {
     Class mValueClass = mValue.getClass();
     if (mValueClass == Integer.class) {
       eventData.putInt("value", (Integer) mValue);
+    } else if (mValueClass == Double.class) {
+      eventData.putDouble("value", (Double) mValue);
     } else if (mValueClass == String.class) {
       eventData.putString("value", mValue.toString());
     }
