@@ -1,10 +1,4 @@
-import {
-  requireNativeComponent,
-  UIManager,
-  Platform,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { requireNativeComponent, StyleProp, ViewStyle } from 'react-native';
 import type {
   NativeColorType,
   NativeOnChange,
@@ -25,6 +19,7 @@ type NativeCommonProps = {
 type NativeIOSProps = {
   style?: StyleProp<ViewStyle>;
   selectedIndexes?: number[];
+  testID?: string;
 };
 
 type NativeAndroidProps = {
@@ -44,14 +39,4 @@ export type NativePickerProps = NativeCommonProps &
   (NativeIOSProps | NativeAndroidProps);
 
 export const NativePicker =
-  UIManager.getViewManagerConfig(ComponentName) != null
-    ? requireNativeComponent<NativePickerProps>(ComponentName)
-    : () => {
-        throw new Error(LINKING_ERROR);
-      };
-
-const LINKING_ERROR =
-  `The package 'react-native-picky' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n';
+  requireNativeComponent<NativePickerProps>(ComponentName);
