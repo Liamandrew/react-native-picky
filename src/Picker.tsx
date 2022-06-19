@@ -29,9 +29,9 @@ export interface PickerProps {
   itemSpace?: number;
   textColor?: string;
   textSize?: number;
-  selectedIndex?: number;
   style?: StyleProp<ViewStyle>;
   onChange?: (item: PickerGroupChangeItem) => void;
+  testID?: string;
 }
 
 export const Picker = ({
@@ -47,6 +47,7 @@ export const Picker = ({
   onChange,
   style,
   children,
+  testID,
 }: PickerProps) => {
   const { data, selectedIndexes } = useGroupedNativePicker({
     children,
@@ -76,6 +77,7 @@ export const Picker = ({
         loop={loop}
         onChange={handleOnChange}
         style={[styles.picker, style]}
+        testID={testID}
       />
     );
   }
@@ -103,6 +105,7 @@ export const Picker = ({
               textSize={textSize}
               selectedIndex={selectedIndexes[index]}
               style={styles.picker}
+              testID={testID}
             />
           </View>
         ))}
