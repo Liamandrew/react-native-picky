@@ -99,7 +99,7 @@ public class PickyManager extends SimpleViewManager<Picky> {
       }
     }
 
-    @ReactProp(name="textColor", customType = "Color")
+    @ReactProp(name="textColor")
     public void setTextColor(Picky picker, Integer color) {
         if (picker != null) {
             picker.setItemTextColor(color);
