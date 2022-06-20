@@ -25,6 +25,7 @@
     _numberOfLines = 1;
     _loop = false;
     _loopThreshold = 1;
+    _selectedIndexes = [NSArray new];
 
     self.delegate = self;
     self.dataSource = self;
@@ -47,7 +48,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void)setSelectedIndexes:(NSArray *)selectedIndexes
 {
-  BOOL animated = _selectedIndexes == nil; // Don't animate the initial value
+  BOOL animated = [_selectedIndexes count] > 0; // Don't animate the initial value
   _selectedIndexes = [selectedIndexes copy];
 
   for (NSInteger i = 0; i < [_data count]; i++) {

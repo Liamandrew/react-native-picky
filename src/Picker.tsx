@@ -73,9 +73,9 @@ export const Picker = ({
     return (
       <NativePicker
         selectedIndexes={selectedIndexes}
+        onChange={handleOnChange}
         data={data}
         loop={loop}
-        onChange={handleOnChange}
         style={[styles.picker, style]}
         testID={testID}
       />
