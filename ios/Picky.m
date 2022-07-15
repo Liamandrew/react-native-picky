@@ -195,7 +195,7 @@ numberOfRowsInComponent:(__unused NSInteger)component
 
   if (_onChange && dataCount > (NSUInteger)newRow) {
     _onChange(@{
-      @"group": @(component),
+      @"column": @(component),
       @"index": @(newRow),
       @"value": RCTNullIfNil([self dataForRow:row inComponent:component][@"value"]),
     });

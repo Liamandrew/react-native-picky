@@ -28,17 +28,17 @@ yarn add react-native-picky
 ## Quick Start
 
 ```tsx
-import { Picker, PickerGroup, PickerItem } from 'react-native-picky';
+import { Picker, PickerColumn, PickerItem } from 'react-native-picky';
 
 export const Demo = () => (
   <Picker>
-    <PickerGroup>
+    <PickerColumn>
       <PickerItem label="Monday" value="Monday" />
       <PickerItem label="Tuesday" value="Tuesday" />
       <PickerItem label="Wednesday" value="Wednesday" />
       <PickerItem label="Thursday" value="Thursday" />
       <PickerItem label="Friday" value="Friday" />
-    </PickerGroup>
+    </PickerColumn>
   </Picker>
 );
 ```
@@ -61,12 +61,12 @@ export const Demo = () => (
 | textColor      | string   | The color of the item text                                | Android      | #000000              |
 | textSize       | number   | The size of the item text                                 | Android      | 20                   |
 
-### `<PickerGroup />`
+### `<PickerColumn />`
 
-| Property      | Type             | Description                                               | Platform     | Default |
-| ------------- | ---------------- | --------------------------------------------------------- | ------------ | ------- |
-| selectedValue | string \| number | The selected value                                        | iOS, Android |         |
-| onChange      | function         | A callback function if the value is changed in this group | iOS, Android |         |
+| Property      | Type             | Description                                                | Platform     | Default |
+| ------------- | ---------------- | ---------------------------------------------------------- | ------------ | ------- |
+| selectedValue | string \| number | The selected value                                         | iOS, Android |         |
+| onChange      | function         | A callback function if the value is changed in this column | iOS, Android |         |
 
 ### `<PickerItem />`
 

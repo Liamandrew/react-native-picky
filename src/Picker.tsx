@@ -8,15 +8,15 @@ import {
   ViewStyle,
 } from 'react-native';
 import { NativePicker } from './NativePicker';
-import type { PickerGroupProps } from './PickerGroup';
+import type { PickerColumnProps } from './PickerColumn';
 import type {
   NativeItem,
   NativeOnChange,
   NativePickerDataItem,
-  PickerGroupChangeItem,
+  PickerColumnChangeItem,
 } from './types';
 
-type PickerChild = ReactElement<PickerGroupProps>;
+type PickerChild = ReactElement<PickerColumnProps>;
 
 export interface PickerProps {
   loop?: boolean;
@@ -30,7 +30,7 @@ export interface PickerProps {
   textColor?: string;
   textSize?: number;
   style?: StyleProp<ViewStyle>;
-  onChange?: (item: PickerGroupChangeItem) => void;
+  onChange?: (item: PickerColumnChangeItem) => void;
   testID?: string;
 }
 
@@ -49,7 +49,7 @@ export const Picker = ({
   children,
   testID,
 }: PickerProps) => {
-  const { data, selectedIndexes } = useGroupedNativePicker({
+  const { data, selectedIndexes } = useNativePickerColumns({
     children,
     textColor,
   });
@@ -60,9 +60,9 @@ export const Picker = ({
         onChange(nativeEvent);
       }
 
-      Children.forEach(children, (groupChild, index) => {
-        if (index === nativeEvent.group && groupChild.props.onChange) {
-          groupChild.props.onChange(nativeEvent);
+      Children.forEach(children, (columnChild, index) => {
+        if (index === nativeEvent.column && columnChild.props.onChange) {
+          columnChild.props.onChange(nativeEvent);
         }
       });
     },
@@ -91,7 +91,7 @@ export const Picker = ({
             style={[styles.androidPickyContainer, style]}
           >
             <NativePicker
-              group={index}
+              column={index}
               data={componentData}
               loop={loop}
               onChange={handleOnChange}
@@ -116,7 +116,7 @@ export const Picker = ({
   return null;
 };
 
-const useGroupedNativePicker = ({
+const useNativePickerColumns = ({
   children,
   textColor,
 }: Required<Pick<PickerProps, 'children' | 'textColor'>>) =>
@@ -124,21 +124,21 @@ const useGroupedNativePicker = ({
     const selectedIndexes: number[] = [];
     const data: NativePickerDataItem[] = [];
 
-    Children.forEach(children, (groupChild, groupChildIndex) => {
-      const groupItems: NativeItem[] = [];
+    Children.forEach(children, (columnChild, columnChildIndex) => {
+      const columnItems: NativeItem[] = [];
 
       Children.forEach(
-        groupChild.props.children,
+        columnChild.props.children,
         (itemChild, itemChildIndex) => {
           if (
-            groupChild.props.selectedValue &&
-            itemChild.props.value === groupChild.props.selectedValue &&
-            selectedIndexes.length <= groupChildIndex
+            columnChild.props.selectedValue &&
+            itemChild.props.value === columnChild.props.selectedValue &&
+            selectedIndexes.length <= columnChildIndex
           ) {
             selectedIndexes.push(itemChildIndex);
           }
 
-          groupItems.push({
+          columnItems.push({
             label: itemChild.props.label,
             value: itemChild.props.value,
             textColor: processColor(itemChild.props.color ?? textColor),
@@ -147,11 +147,11 @@ const useGroupedNativePicker = ({
         }
       );
 
-      if (selectedIndexes.length <= groupChildIndex) {
+      if (selectedIndexes.length <= columnChildIndex) {
         selectedIndexes.push(0);
       }
 
-      data.push(groupItems);
+      data.push(columnItems);
     });
 
     return { data, selectedIndexes };

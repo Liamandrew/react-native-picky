@@ -11,14 +11,14 @@ export type NativeItem = {
 
 export type NativePickerDataItem = NativeItem[];
 
-export type PickerGroupChangeItem = {
+export type PickerColumnChangeItem = {
   value: string | number;
   index: number;
-  group: number;
+  column: number;
 };
 
 export type NativePickerChangeEvent = {
-  group: number;
+  column: number;
   index: number;
   value: string | number;
 };

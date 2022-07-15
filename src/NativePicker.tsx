@@ -23,7 +23,7 @@ type NativeIOSProps = {
 };
 
 type NativeAndroidProps = {
-  group?: number;
+  column?: number;
   curtainColor?: NativeColorType;
   hasCurtain?: boolean;
   hasIndicator?: boolean;
