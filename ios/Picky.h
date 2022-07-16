@@ -15,6 +15,7 @@
 @interface Picky : UIPickerView
 
 @property (nonatomic, copy) NSArray *data;
+@property (nonatomic, copy) NSArray *columnWidths;
 @property (nonatomic, copy) NSArray *selectedIndexes;
 
 @property (nonatomic, assign) BOOL loop;

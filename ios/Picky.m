@@ -25,6 +25,7 @@
     _numberOfLines = 1;
     _loop = false;
     _loopThreshold = 1;
+    _columnWidths = [NSArray new];
     _selectedIndexes = [NSArray new];
 
     self.delegate = self;
@@ -43,6 +44,13 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     [self initLoopScrollBehaviour];
   }
   
+  [self setNeedsLayout];
+}
+
+- (void)setColumnWidths:(NSArray *)columnWidths
+{
+  _columnWidths = [columnWidths copy];
+
   [self setNeedsLayout];
 }
 
@@ -90,7 +98,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   [self setNeedsLayout];
 }
 
-- (void) setFont:(UIFont *)font
+- (void)setFont:(UIFont *)font
 {
   _font = font;
   [self reloadAllComponents];
@@ -128,7 +136,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (NSInteger)pickerView:(__unused UIPickerView *)pickerView
 numberOfRowsInComponent:(__unused NSInteger)component
 {
-  return [[_data objectAtIndex: component] count] * _loopThreshold;
+  return [[_data objectAtIndex:component] count] * _loopThreshold;
 }
 
 #pragma mark - UIPickerViewDelegate methods
@@ -140,8 +148,18 @@ numberOfRowsInComponent:(__unused NSInteger)component
   return [RCTConvert NSString: [self dataForRow:row inComponent:component][@"label"]];
 }
 
-- (CGFloat)pickerView:(__unused UIPickerView *)pickerView rowHeightForComponent:(__unused NSInteger) component {
+- (CGFloat)pickerView:(__unused UIPickerView *)pickerView
+rowHeightForComponent:(__unused NSInteger) component {
   return (_font.lineHeight) * _numberOfLines + 20;
+}
+
+- (CGFloat)pickerView:(__unused UIPickerView *)pickerView
+    widthForComponent:(__unused NSInteger)component {
+  if ([_columnWidths count] == 0) {
+    return 0;
+  }
+
+  return [[_columnWidths objectAtIndex:component] floatValue];
 }
 
 - (UIView *)pickerView:(UIPickerView *)pickerView

@@ -18,6 +18,7 @@ type NativeCommonProps = {
 
 type NativeIOSProps = {
   numberOfLines?: number;
+  columnWidths: number[];
   style?: StyleProp<ViewStyle>;
   selectedIndexes?: number[];
   testID?: string;

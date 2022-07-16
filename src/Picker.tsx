@@ -1,4 +1,10 @@
-import React, { Children, ReactElement, useCallback, useMemo } from 'react';
+import React, {
+  Children,
+  ReactElement,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import {
   StyleSheet,
   Platform,
@@ -6,6 +12,8 @@ import {
   View,
   StyleProp,
   ViewStyle,
+  useWindowDimensions,
+  LayoutChangeEvent,
 } from 'react-native';
 import { NativePicker } from './NativePicker';
 import type { PickerColumnProps } from './PickerColumn';
@@ -51,9 +59,12 @@ export const Picker = ({
   children,
   testID,
 }: PickerProps) => {
-  const { data, selectedIndexes } = useNativePickerColumns({
+  const { width: windowWidth } = useWindowDimensions();
+  const [viewWidth, setViewWidth] = useState(windowWidth);
+  const { data, columnWidths, selectedIndexes } = useNativePickerColumns({
     children,
     textColor,
+    viewWidth,
   });
 
   const handleOnChange: NativeOnChange = useCallback(
@@ -71,27 +82,44 @@ export const Picker = ({
     [onChange, children]
   );
 
+  const handleOnLayout = useCallback(
+    ({
+      nativeEvent: {
+        layout: { width },
+      },
+    }: LayoutChangeEvent) => setViewWidth(width),
+    []
+  );
+
   if (Platform.OS === 'ios') {
     return (
-      <NativePicker
-        selectedIndexes={selectedIndexes}
-        onChange={handleOnChange}
-        numberOfLines={numberOfLines}
-        data={data}
-        loop={loop}
-        style={[styles.picker, style]}
-        testID={testID}
-      />
+      <View onLayout={handleOnLayout}>
+        <NativePicker
+          selectedIndexes={selectedIndexes}
+          onChange={handleOnChange}
+          numberOfLines={numberOfLines}
+          data={data}
+          columnWidths={columnWidths}
+          loop={loop}
+          style={[styles.picker, style]}
+          testID={testID}
+        />
+      </View>
     );
   }
 
   if (Platform.OS === 'android') {
     return (
-      <View style={styles.androidContainer}>
+      <View onLayout={handleOnLayout} style={styles.androidContainer}>
         {data.map((componentData, index) => (
           <View
             key={`picky-component-${index}`}
-            style={[styles.androidPickyContainer, style]}
+            style={[
+              {
+                width: columnWidths[index] + LABEL_INSET_SPACE,
+              },
+              style,
+            ]}
           >
             <NativePicker
               column={index}
@@ -120,12 +148,18 @@ export const Picker = ({
 };
 
 const useNativePickerColumns = ({
+  viewWidth,
   children,
   textColor,
-}: Required<Pick<PickerProps, 'children' | 'textColor'>>) =>
+}: Required<Pick<PickerProps, 'children' | 'textColor'>> & {
+  viewWidth: number;
+}) =>
   useMemo(() => {
+    let columnWidths: number[] = [];
     const selectedIndexes: number[] = [];
     const data: NativePickerDataItem[] = [];
+
+    let availableSpace = viewWidth;
 
     Children.forEach(children, (columnChild, columnChildIndex) => {
       const columnItems: NativeItem[] = [];
@@ -154,18 +188,41 @@ const useNativePickerColumns = ({
         selectedIndexes.push(0);
       }
 
+      if (typeof columnChild.props.width === 'number') {
+        const w = Math.max(columnChild.props.width - LABEL_INSET_SPACE, 0);
+
+        availableSpace -= columnChild.props.width;
+
+        columnWidths.push(w);
+      } else {
+        columnWidths.push(-1);
+      }
+
       data.push(columnItems);
     });
 
-    return { data, selectedIndexes };
-  }, [children, textColor]);
+    // Automatically set width for remaining columns to the available space
+    const columnsWithoutWidth = columnWidths.filter((w) => w < 0);
+    if (columnsWithoutWidth.length) {
+      columnWidths = columnWidths.map((w) =>
+        w < 0
+          ? Math.max(
+              availableSpace / columnsWithoutWidth.length - LABEL_INSET_SPACE,
+              0
+            )
+          : w
+      );
+    }
+
+    return { data, columnWidths, selectedIndexes };
+  }, [children, textColor, viewWidth]);
+
+const LABEL_INSET_SPACE = 20;
 
 const styles = StyleSheet.create({
   androidContainer: {
     flexDirection: 'row',
-  },
-  androidPickyContainer: {
-    flex: 1,
+    width: '100%',
   },
   picker: {
     height: 216,
