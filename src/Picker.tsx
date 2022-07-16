@@ -29,6 +29,7 @@ export interface PickerProps {
   itemSpace?: number;
   textColor?: string;
   textSize?: number;
+  numberOfLines?: number;
   style?: StyleProp<ViewStyle>;
   onChange?: (item: PickerColumnChangeItem) => void;
   testID?: string;
@@ -44,6 +45,7 @@ export const Picker = ({
   textColor = '#000000',
   textSize = 20,
   loop,
+  numberOfLines = 1,
   onChange,
   style,
   children,
@@ -74,6 +76,7 @@ export const Picker = ({
       <NativePicker
         selectedIndexes={selectedIndexes}
         onChange={handleOnChange}
+        numberOfLines={numberOfLines}
         data={data}
         loop={loop}
         style={[styles.picker, style]}
