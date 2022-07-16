@@ -1,46 +1,49 @@
 import * as React from 'react';
 
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Picker, PickerGroup, PickerItem } from 'react-native-picky';
+import { Picker, PickerColumn, PickerItem } from 'react-native-picky';
 
 export default function App() {
   return (
     <View style={styles.container}>
       <ScrollView>
         <Picker loop>
-          <PickerGroup>
+          <PickerColumn>
             <PickerItem label="A1" value="A1" />
             <PickerItem label="A2" value="A2" />
             <PickerItem label="A3" value="A3" />
             <PickerItem label="A4" value="A4" />
             <PickerItem label="A5" value="A5" />
-          </PickerGroup>
+          </PickerColumn>
         </Picker>
 
-        <Picker loop onChange={(event) => console.log('picker level: ', event)}>
-          <PickerGroup
-            onChange={(event) => console.log('picker group level: ', event)}
+        <Picker
+          loop
+          onChange={(event) => console.log('Picker onChange: ', event)}
+        >
+          <PickerColumn
+            onChange={(event) => console.log('PickerColumn onChange: ', event)}
           >
             <PickerItem label="A1" value="A1" />
             <PickerItem label="A2" value="A2" />
             <PickerItem label="A3" value="A3" />
             <PickerItem label="A4" value="A4" />
             <PickerItem label="A5" value="A5" />
-          </PickerGroup>
-          <PickerGroup>
+          </PickerColumn>
+          <PickerColumn>
             <PickerItem label="B1" value="B1" />
             <PickerItem label="B2" value="B2" />
             <PickerItem label="B3" value="B3" />
             <PickerItem label="B4" value="B4" />
             <PickerItem label="B5" value="B5" />
-          </PickerGroup>
-          <PickerGroup>
+          </PickerColumn>
+          <PickerColumn>
             <PickerItem label="C1" value="C1" />
             <PickerItem label="C2" value="C2" />
             <PickerItem label="C3" value="C3" />
             <PickerItem label="C4" value="C4" />
             <PickerItem label="C5" value="C5" />
-          </PickerGroup>
+          </PickerColumn>
         </Picker>
       </ScrollView>
     </View>

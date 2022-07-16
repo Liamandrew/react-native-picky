@@ -56,10 +56,10 @@ public class PickyManager extends SimpleViewManager<Picky> {
       );
     }
 
-    @ReactProp(name="group")
-    public void setGroup(Picky picker, int group) {
+    @ReactProp(name="column")
+    public void setColumn(Picky picker, int column) {
       if (picker != null) {
-        picker.setGroup(group);
+        picker.setColumn(column);
       }
     }
 

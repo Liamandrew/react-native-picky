@@ -28,17 +28,17 @@ yarn add react-native-picky
 ## Quick Start
 
 ```tsx
-import { Picker, PickerGroup, PickerItem } from 'react-native-picky';
+import { Picker, PickerColumn, PickerItem } from 'react-native-picky';
 
 export const Demo = () => (
   <Picker>
-    <PickerGroup>
+    <PickerColumn>
       <PickerItem label="Monday" value="Monday" />
       <PickerItem label="Tuesday" value="Tuesday" />
       <PickerItem label="Wednesday" value="Wednesday" />
       <PickerItem label="Thursday" value="Thursday" />
       <PickerItem label="Friday" value="Friday" />
-    </PickerGroup>
+    </PickerColumn>
   </Picker>
 );
 ```
@@ -52,6 +52,7 @@ export const Demo = () => (
 | loop           | boolean  | Enable looping options                                    | iOS, Android | false                |
 | style          | object   | View style prop                                           | iOS, Android |                      |
 | onChange       | function | A callback function when a value is changed in any column | iOS, Android |                      |
+| numberOfLines  | number   | The number of lines for each row in a column              | iOS          | 1                    |
 | hasCurtain     | boolean  | Enable the curtain to highlight the selected value        | Android      | true                 |
 | curtainColor   | string   | Color of the curtain                                      | Android      | hsla(0, 0%, 0%, 0.1) |
 | hasIndicator   | boolean  | Enable the indicator to highlight the selected value      | Android      | true                 |
@@ -61,12 +62,13 @@ export const Demo = () => (
 | textColor      | string   | The color of the item text                                | Android      | #000000              |
 | textSize       | number   | The size of the item text                                 | Android      | 20                   |
 
-### `<PickerGroup />`
+### `<PickerColumn />`
 
-| Property      | Type             | Description                                               | Platform     | Default |
-| ------------- | ---------------- | --------------------------------------------------------- | ------------ | ------- |
-| selectedValue | string \| number | The selected value                                        | iOS, Android |         |
-| onChange      | function         | A callback function if the value is changed in this group | iOS, Android |         |
+| Property      | Type             | Description                                                | Platform     | Default                      |
+| ------------- | ---------------- | ---------------------------------------------------------- | ------------ | ---------------------------- |
+| selectedValue | string \| number | The selected value                                         | iOS, Android |                              |
+| onChange      | function         | A callback function if the value is changed in this column | iOS, Android |                              |
+| width         | number           | The width of this column                                   | iOS, Android | Takes up the available space |
 
 ### `<PickerItem />`
 

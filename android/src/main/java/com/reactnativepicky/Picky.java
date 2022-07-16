@@ -13,7 +13,7 @@ public class Picky extends WheelPicker {
   private final EventDispatcher mEventDispatcher;
   private List<String> mValueData;
   private int mState;
-  private int mGroup;
+  private int mColumn;
 
   public Picky(ReactContext reactContext) {
     super(reactContext);
@@ -27,7 +27,7 @@ public class Picky extends WheelPicker {
       public void onWheelSelected(int index) {
         if (mValueData != null && index < mValueData.size()) {
           mEventDispatcher.dispatchEvent(
-            new ItemSelectedEvent(getId(), mValueData.get(index), index, mGroup));
+            new ItemSelectedEvent(getId(), mValueData.get(index), index, mColumn));
         }
       }
 
@@ -47,8 +47,8 @@ public class Picky extends WheelPicker {
     mValueData = data;
   }
 
-  public void setGroup(int group) {
-    mGroup = group;
+  public void setColumn(int column) {
+    mColumn = column;
   }
 
   public int getState() {

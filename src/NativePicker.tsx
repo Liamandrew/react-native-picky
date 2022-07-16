@@ -17,13 +17,15 @@ type NativeCommonProps = {
 };
 
 type NativeIOSProps = {
+  numberOfLines?: number;
+  columnWidths: number[];
   style?: StyleProp<ViewStyle>;
   selectedIndexes?: number[];
   testID?: string;
 };
 
 type NativeAndroidProps = {
-  group?: number;
+  column?: number;
   curtainColor?: NativeColorType;
   hasCurtain?: boolean;
   hasIndicator?: boolean;

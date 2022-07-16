@@ -1,8 +1,8 @@
 export { Picker } from './Picker';
-export { PickerGroup } from './PickerGroup';
+export { PickerColumn } from './PickerColumn';
 export { PickerItem } from './PickerItem';
 
 export type { PickerProps } from './Picker';
-export type { PickerGroupProps } from './PickerGroup';
+export type { PickerColumnProps } from './PickerColumn';
 export type { PickerItemProps } from './PickerItem';
-export type { PickerGroupChangeItem } from './types';
+export type { PickerColumnChangeItem } from './types';

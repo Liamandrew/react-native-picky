@@ -1,4 +1,10 @@
-import React, { Children, ReactElement, useCallback, useMemo } from 'react';
+import React, {
+  Children,
+  ReactElement,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import {
   StyleSheet,
   Platform,
@@ -6,17 +12,19 @@ import {
   View,
   StyleProp,
   ViewStyle,
+  useWindowDimensions,
+  LayoutChangeEvent,
 } from 'react-native';
 import { NativePicker } from './NativePicker';
-import type { PickerGroupProps } from './PickerGroup';
+import type { PickerColumnProps } from './PickerColumn';
 import type {
   NativeItem,
   NativeOnChange,
   NativePickerDataItem,
-  PickerGroupChangeItem,
+  PickerColumnChangeItem,
 } from './types';
 
-type PickerChild = ReactElement<PickerGroupProps>;
+type PickerChild = ReactElement<PickerColumnProps>;
 
 export interface PickerProps {
   loop?: boolean;
@@ -29,8 +37,9 @@ export interface PickerProps {
   itemSpace?: number;
   textColor?: string;
   textSize?: number;
+  numberOfLines?: number;
   style?: StyleProp<ViewStyle>;
-  onChange?: (item: PickerGroupChangeItem) => void;
+  onChange?: (item: PickerColumnChangeItem) => void;
   testID?: string;
 }
 
@@ -44,14 +53,18 @@ export const Picker = ({
   textColor = '#000000',
   textSize = 20,
   loop,
+  numberOfLines = 1,
   onChange,
   style,
   children,
   testID,
 }: PickerProps) => {
-  const { data, selectedIndexes } = useGroupedNativePicker({
+  const { width: windowWidth } = useWindowDimensions();
+  const [viewWidth, setViewWidth] = useState(windowWidth);
+  const { data, columnWidths, selectedIndexes } = useNativePickerColumns({
     children,
     textColor,
+    viewWidth,
   });
 
   const handleOnChange: NativeOnChange = useCallback(
@@ -60,38 +73,56 @@ export const Picker = ({
         onChange(nativeEvent);
       }
 
-      Children.forEach(children, (groupChild, index) => {
-        if (index === nativeEvent.group && groupChild.props.onChange) {
-          groupChild.props.onChange(nativeEvent);
+      Children.forEach(children, (columnChild, index) => {
+        if (index === nativeEvent.column && columnChild.props.onChange) {
+          columnChild.props.onChange(nativeEvent);
         }
       });
     },
     [onChange, children]
   );
 
+  const handleOnLayout = useCallback(
+    ({
+      nativeEvent: {
+        layout: { width },
+      },
+    }: LayoutChangeEvent) => setViewWidth(width),
+    []
+  );
+
   if (Platform.OS === 'ios') {
     return (
-      <NativePicker
-        selectedIndexes={selectedIndexes}
-        onChange={handleOnChange}
-        data={data}
-        loop={loop}
-        style={[styles.picker, style]}
-        testID={testID}
-      />
+      <View onLayout={handleOnLayout}>
+        <NativePicker
+          selectedIndexes={selectedIndexes}
+          onChange={handleOnChange}
+          numberOfLines={numberOfLines}
+          data={data}
+          columnWidths={columnWidths}
+          loop={loop}
+          style={[styles.picker, style]}
+          testID={testID}
+        />
+      </View>
     );
   }
 
   if (Platform.OS === 'android') {
     return (
-      <View style={styles.androidContainer}>
+      <View onLayout={handleOnLayout} style={styles.androidContainer}>
         {data.map((componentData, index) => (
           <View
             key={`picky-component-${index}`}
-            style={[styles.androidPickyContainer, style]}
+            style={[
+              {
+                width: columnWidths[index] + LABEL_INSET_SPACE,
+              },
+              style,
+            ]}
           >
             <NativePicker
-              group={index}
+              column={index}
               data={componentData}
               loop={loop}
               onChange={handleOnChange}
@@ -116,29 +147,35 @@ export const Picker = ({
   return null;
 };
 
-const useGroupedNativePicker = ({
+const useNativePickerColumns = ({
+  viewWidth,
   children,
   textColor,
-}: Required<Pick<PickerProps, 'children' | 'textColor'>>) =>
+}: Required<Pick<PickerProps, 'children' | 'textColor'>> & {
+  viewWidth: number;
+}) =>
   useMemo(() => {
+    let columnWidths: number[] = [];
     const selectedIndexes: number[] = [];
     const data: NativePickerDataItem[] = [];
 
-    Children.forEach(children, (groupChild, groupChildIndex) => {
-      const groupItems: NativeItem[] = [];
+    let availableSpace = viewWidth;
+
+    Children.forEach(children, (columnChild, columnChildIndex) => {
+      const columnItems: NativeItem[] = [];
 
       Children.forEach(
-        groupChild.props.children,
+        columnChild.props.children,
         (itemChild, itemChildIndex) => {
           if (
-            groupChild.props.selectedValue &&
-            itemChild.props.value === groupChild.props.selectedValue &&
-            selectedIndexes.length <= groupChildIndex
+            columnChild.props.selectedValue &&
+            itemChild.props.value === columnChild.props.selectedValue &&
+            selectedIndexes.length <= columnChildIndex
           ) {
             selectedIndexes.push(itemChildIndex);
           }
 
-          groupItems.push({
+          columnItems.push({
             label: itemChild.props.label,
             value: itemChild.props.value,
             textColor: processColor(itemChild.props.color ?? textColor),
@@ -147,22 +184,45 @@ const useGroupedNativePicker = ({
         }
       );
 
-      if (selectedIndexes.length <= groupChildIndex) {
+      if (selectedIndexes.length <= columnChildIndex) {
         selectedIndexes.push(0);
       }
 
-      data.push(groupItems);
+      if (typeof columnChild.props.width === 'number') {
+        const w = Math.max(columnChild.props.width - LABEL_INSET_SPACE, 0);
+
+        availableSpace -= columnChild.props.width;
+
+        columnWidths.push(w);
+      } else {
+        columnWidths.push(-1);
+      }
+
+      data.push(columnItems);
     });
 
-    return { data, selectedIndexes };
-  }, [children, textColor]);
+    // Automatically set width for remaining columns to the available space
+    const columnsWithoutWidth = columnWidths.filter((w) => w < 0);
+    if (columnsWithoutWidth.length) {
+      columnWidths = columnWidths.map((w) =>
+        w < 0
+          ? Math.max(
+              availableSpace / columnsWithoutWidth.length - LABEL_INSET_SPACE,
+              0
+            )
+          : w
+      );
+    }
+
+    return { data, columnWidths, selectedIndexes };
+  }, [children, textColor, viewWidth]);
+
+const LABEL_INSET_SPACE = 20;
 
 const styles = StyleSheet.create({
   androidContainer: {
     flexDirection: 'row',
-  },
-  androidPickyContainer: {
-    flex: 1,
+    width: '100%',
   },
   picker: {
     height: 216,
