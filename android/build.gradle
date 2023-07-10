@@ -26,10 +26,10 @@ rootProject.allprojects {
 }
 
 android {
-    compileSdkVersion safeExtGet('Picky_compileSdkVersion', 29)
+    compileSdkVersion safeExtGet('Picky_compileSdkVersion', 33)
     defaultConfig {
-        minSdkVersion safeExtGet('Picky_minSdkVersion', 16)
-        targetSdkVersion safeExtGet('Picky_targetSdkVersion', 29)
+        minSdkVersion safeExtGet('Picky_minSdkVersion', 21)
+        targetSdkVersion safeExtGet('Picky_targetSdkVersion', 33)
         versionCode 1
         versionName "1.0"
 
